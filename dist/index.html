@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Draw three digits and solve numerical analogies. Calculate analogical power from four numbers.">
+  <meta name="color-scheme" content="light">
+  <title>Numerical Analogy on Images</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/ort.wasm.min.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="./">Numerical analogy <span>on images</span></a><span class="local-badge">Runs in your browser</span></header>
+  <main>
+    <section class="intro"><h1>Numerical Analogy on Images</h1></section>
+    <div class="interaction-layout">
+      <section class="workspace" aria-labelledby="draw-heading">
+        <div class="section-head"><h2 id="draw-heading">Draw A, B and C</h2><button id="clear-all" class="text-button">Clear all</button></div>
+        <div class="inputs">
+          <article class="digit-card"><div class="card-heading"><h3>A</h3><button class="clear text-button" aria-label="Clear A">Clear</button></div><canvas id="draw-a" class="drawing" width="280" height="280" aria-label="Draw digit A"></canvas></article>
+          <span class="relation-separator" aria-hidden="true">:</span>
+          <article class="digit-card"><div class="card-heading"><h3>B</h3><button class="clear text-button" aria-label="Clear B">Clear</button></div><canvas id="draw-b" class="drawing" width="280" height="280" aria-label="Draw digit B"></canvas></article>
+          <span class="relation-separator" aria-hidden="true">::</span>
+          <article class="digit-card"><div class="card-heading"><h3>C</h3><button class="clear text-button" aria-label="Clear C">Clear</button></div><canvas id="draw-c" class="drawing" width="280" height="280" aria-label="Draw digit C"></canvas></article>
+        </div>
+        <div class="solve-bar"><div class="power-control"><label for="power">Power</label><input id="power" type="number" value="1" min="-20" max="20" step="any"></div><button id="solve" class="primary" disabled>Loading…</button></div>
+        <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+      </section>
+      <section id="results" class="results" aria-labelledby="results-heading">
+        <div class="section-head"><h2 id="results-heading">Result</h2><span id="timing"></span></div>
+        <article class="output-card proposed"><canvas id="proposed-output" width="28" height="28" aria-label="Proposed model generated digit"></canvas><h3>Proposed model</h3><p id="relation-summary">A : B :: C : ?</p></article>
+        <p id="domain-note" class="domain-note" hidden></p>
+      </section>
+    </div>
+    <section class="calculator" aria-labelledby="calculator-heading">
+      <div class="section-head"><h2 id="calculator-heading">Power calculator</h2></div>
+      <form id="power-calculator" novalidate>
+        <div class="number-fields">
+          <label>A<input id="number-a" type="number" min="0" step="any" value="1" required></label><span aria-hidden="true">:</span>
+          <label>B<input id="number-b" type="number" min="0" step="any" value="4" required></label><span aria-hidden="true">::</span>
+          <label>C<input id="number-c" type="number" min="0" step="any" value="7" required></label><span aria-hidden="true">:</span>
+          <label>D<input id="number-d" type="number" min="0" step="any" value="8" required></label>
+        </div>
+        <button class="primary" type="submit">Calculate power</button>
+      </form>
+      <div class="calculator-answer"><div role="status" aria-live="polite"><p id="calculator-result"></p><p id="calculator-detail"></p></div><button id="use-power" class="secondary" disabled>Use this power</button></div>
+    </section>
+  </main>
+  <footer><span>Numerical Analogy on Images</span><span>Handwriting stays on this device.</span></footer>
+</body>
+</html>

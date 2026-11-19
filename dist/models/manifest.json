@@ -1,0 +1,14 @@
+{
+  "runtime": "onnxruntime-web 1.31.1",
+  "source_checkpoints": {
+    "proposed": {
+      "source_sha256": "5d9a14c6efabfd8aa71e87b027948ae23e20c8dd1a6b4ffea662eb5452bb1d8a",
+      "latent_dim": 32
+    }
+  },
+  "files": {
+    "models/classifier.onnx": "165043c0c12e9c2f9eeeb3849d4eb897e2870b0ce978dbe37462f05c2299ed3b",
+    "models/proposed_decoder.onnx": "3641e9712f2e60e15f063bb8f4225bf55cb23869f5de14005c17e856194b43fd",
+    "models/proposed_encoder.onnx": "e7d48bfd7186b77a4e276463a848bf0aa4f378192eda28ddaf548d58a8925edf"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules/
+*.tgz
+__pycache__/
+review/
+*.zip
+.venv/
+
+发布前确认.md
