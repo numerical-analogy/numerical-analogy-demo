@@ -92,13 +92,13 @@ $('#power-calculator').addEventListener('submit',event=>{
     const value=$(`#number-${letter}`).value.trim();return value===''?NaN:Number(value);
   });
   const result=calculatePower(...values);lastCalculation=result;
-  $('#calculator-result').textContent=result.kind==='unique'?`power ≈ ${Number(result.power.toPrecision(12))}`:result.label;
+  $('#calculator-result').textContent=result.kind==='unique'?`power ${result.exact?'=':'≈'} ${Number(result.power.toPrecision(12))}`:result.label;
   $('#calculator-detail').textContent=result.message||'';
   $('#use-power').disabled=result.kind!=='unique'||Math.abs(result.power)>20;
 });
 $('#use-power').addEventListener('click',()=>{
   if(lastCalculation?.kind!=='unique'||busy)return;
-  $('#power').value=lastCalculation.power;changed();$('#power').focus();
+  $('#power').value=Number(lastCalculation.power.toFixed(6));changed();$('#power').focus();
 });
 
 async function initialize(){

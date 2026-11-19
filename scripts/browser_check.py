@@ -27,6 +27,11 @@ try:
         page.on('pageerror',lambda e:report['console_errors'].append(str(e)))
         page.goto(url)
         page.wait_for_function("document.querySelector('#solve').textContent==='Solve'",timeout=120000)
+        assert page.locator('.local-badge').count()==0
+        page.click('#power-calculator button[type=submit]')
+        assert page.locator('#calculator-result').inner_text()=='power = 2'
+        near=page.evaluate("""async()=>{const {calculatePower}=await import('./power.js');return calculatePower(1,4,7,8.00000000001)}""")
+        assert near['kind']=='unique' and not near['exact']
         assert page.locator('#former-output').count()==0
         assert not any('former' in u for u in requests)
         report['checks'].append('Only the proposed VAE and classifier are loaded; no former-model UI or weights.')
@@ -71,7 +76,8 @@ try:
         page.click('#power-calculator button[type=submit]')
         assert '0.30379398' in page.locator('#calculator-result').inner_text()
         page.click('#use-power')
-        assert abs(float(page.input_value('#power'))-.30379398195)<1e-8
+        assert page.input_value('#power')=='0.303794'
+        assert page.locator('#calculator-result').inner_text().startswith('power ≈ ')
         page.fill('#number-d','6');assert page.locator('#use-power').is_disabled()
         page.fill('#number-d','');page.click('#power-calculator button[type=submit]')
         assert 'Enter four' in page.locator('#calculator-result').inner_text()
