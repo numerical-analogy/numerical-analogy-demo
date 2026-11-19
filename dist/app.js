@@ -22,7 +22,7 @@ function status(message='',error=false){
 }
 function changed(){
   revision++;pixels(output,null);$('#relation-summary').textContent='A : B :: C : ?';
-  $('#domain-note').hidden=true;$('#timing').textContent='';status();
+  $('#domain-note').hidden=true;status();
 }
 function reset(state){
   clearTimeout(state.timer);state.version++;
@@ -85,13 +85,11 @@ async function solve(){
     busy=true;$('#solve').disabled=true;$('#solve').textContent='Solving…';status();
     const inputs=new Float32Array(2352);states.forEach((s,i)=>inputs.set(s.input,i*784));
     const guesses=await models.classify(inputs),labels=guesses.map(g=>g.digit);
-    const start=performance.now();
     const result=await models.solve(inputs,labels,power);
     if(revision!==runRevision){status('Inputs changed. Select Solve again.');return;}
     states.forEach((state,i)=>{state.recognized.textContent=String(labels[i]);});
     pixels(output,result.valid?result.proposed:null);
     $('#relation-summary').textContent=`${labels[0]} : ${labels[1]} :: ${labels[2]} : ?   ·   power = ${Number(power.toPrecision(7))}`;
-    $('#timing').textContent=`${Math.round(performance.now()-start)} ms`;
     $('#domain-note').hidden=result.valid;
     $('#domain-note').textContent='No admissible latent solution. Try another power or handwriting.';
     return result;
