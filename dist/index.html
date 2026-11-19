@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Draw three digits and solve numerical analogies. Calculate analogical power from four numbers.">
   <meta name="color-scheme" content="light">
-  <title>Numerical Analogy on Images</title>
+  <title>Numerical analogy on images: analogy-trained VAE</title>
   <link rel="stylesheet" href="styles.css">
   <script defer src="vendor/ort.wasm.min.js"></script>
   <script type="module" src="app.js"></script>
@@ -13,16 +13,16 @@
 <body>
   <header class="topbar"><a class="brand" href="./">Numerical analogy <span>on images</span></a></header>
   <main>
-    <section class="intro"><h1>Numerical Analogy on Images</h1></section>
+    <section class="intro"><h1>Numerical analogy on images: analogy-trained VAE</h1></section>
     <div class="interaction-layout">
       <section class="workspace" aria-labelledby="draw-heading">
         <div class="section-head"><h2 id="draw-heading">Draw A, B and C</h2><button id="clear-all" class="text-button">Clear all</button></div>
         <div class="inputs">
-          <article class="digit-card"><div class="card-heading"><h3>A</h3><button class="clear text-button" aria-label="Clear A">Clear</button></div><canvas id="draw-a" class="drawing" width="280" height="280" aria-label="Draw digit A"></canvas></article>
+          <article class="digit-card"><div class="card-heading"><h3>A</h3><button class="clear text-button" aria-label="Clear A">Clear</button></div><canvas id="draw-a" class="drawing" width="280" height="280" aria-label="Draw digit A"></canvas><output class="recognized-digit" aria-label="Recognized digit A" aria-live="polite">—</output></article>
           <span class="relation-separator" aria-hidden="true">:</span>
-          <article class="digit-card"><div class="card-heading"><h3>B</h3><button class="clear text-button" aria-label="Clear B">Clear</button></div><canvas id="draw-b" class="drawing" width="280" height="280" aria-label="Draw digit B"></canvas></article>
+          <article class="digit-card"><div class="card-heading"><h3>B</h3><button class="clear text-button" aria-label="Clear B">Clear</button></div><canvas id="draw-b" class="drawing" width="280" height="280" aria-label="Draw digit B"></canvas><output class="recognized-digit" aria-label="Recognized digit B" aria-live="polite">—</output></article>
           <span class="relation-separator" aria-hidden="true">::</span>
-          <article class="digit-card"><div class="card-heading"><h3>C</h3><button class="clear text-button" aria-label="Clear C">Clear</button></div><canvas id="draw-c" class="drawing" width="280" height="280" aria-label="Draw digit C"></canvas></article>
+          <article class="digit-card"><div class="card-heading"><h3>C</h3><button class="clear text-button" aria-label="Clear C">Clear</button></div><canvas id="draw-c" class="drawing" width="280" height="280" aria-label="Draw digit C"></canvas><output class="recognized-digit" aria-label="Recognized digit C" aria-live="polite">—</output></article>
         </div>
         <div class="solve-bar"><div class="power-control"><label for="power">Power</label><input id="power" type="number" value="1" min="-20" max="20" step="any"></div><button id="solve" class="primary" disabled>Loading…</button></div>
         <p id="status" class="status" role="status" aria-live="polite" hidden></p>
@@ -47,6 +47,6 @@
       <div class="calculator-answer"><div role="status" aria-live="polite"><p id="calculator-result"></p><p id="calculator-detail"></p></div><button id="use-power" class="secondary" disabled>Use this power</button></div>
     </section>
   </main>
-  <footer><span>Numerical Analogy on Images</span><span>Handwriting stays on this device.</span></footer>
+  <footer><span>Numerical analogy on images</span><span>Handwriting stays on this device.</span></footer>
 </body>
 </html>

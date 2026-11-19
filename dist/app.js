@@ -4,6 +4,7 @@ import {calculatePower} from './power.js';
 const $=s=>document.querySelector(s);
 const models=new Models();
 let ready=false,busy=false,revision=0,lastCalculation=null;
+let recognitionQueue=Promise.resolve();
 const states=[];
 const output=$('#proposed-output');
 
@@ -24,11 +25,28 @@ function changed(){
   $('#domain-note').hidden=true;$('#timing').textContent='';status();
 }
 function reset(state){
+  clearTimeout(state.timer);state.version++;
   const ctx=state.canvas.getContext('2d');ctx.fillStyle='black';ctx.fillRect(0,0,280,280);
-  state.input=null;changed();
+  state.input=null;state.recognized.textContent='—';changed();
+}
+function recognize(state){
+  const version=state.version,input=normalizeDrawing(state.canvas);
+  state.input=input;
+  if(!input){state.recognized.textContent='—';return;}
+  if(!ready)return;
+  recognitionQueue=recognitionQueue.catch(()=>{}).then(async()=>{
+    if(version!==state.version||busy)return;
+    try{
+      const [prediction]=await models.classify(input);
+      if(version===state.version)state.recognized.textContent=String(prediction.digit);
+    }catch{if(version===state.version)state.recognized.textContent='—';}
+  });
+}
+function scheduleRecognition(state,delay=120){
+  clearTimeout(state.timer);state.timer=setTimeout(()=>recognize(state),delay);
 }
 document.querySelectorAll('.digit-card').forEach(card=>{
-  const state={canvas:card.querySelector('.drawing')};states.push(state);reset(state);
+  const state={canvas:card.querySelector('.drawing'),recognized:card.querySelector('.recognized-digit'),version:0,timer:null};states.push(state);reset(state);
   card.querySelector('.clear').addEventListener('click',()=>{if(!busy)reset(state);});
   let drawing=false,last=null;
   const position=e=>{
@@ -45,11 +63,11 @@ document.querySelectorAll('.digit-card').forEach(card=>{
   state.canvas.addEventListener('pointerdown',e=>{
     if(busy||drawing)return;
     e.preventDefault();state.canvas.setPointerCapture(e.pointerId);
-    state.input=null;changed();drawing=true;last=null;stroke(position(e));
+    state.version++;state.input=null;state.recognized.textContent='…';changed();drawing=true;last=null;stroke(position(e));scheduleRecognition(state);
   });
-  state.canvas.addEventListener('pointermove',e=>{if(drawing)stroke(position(e));});
+  state.canvas.addEventListener('pointermove',e=>{if(drawing){state.version++;stroke(position(e));scheduleRecognition(state);}});
   function finish(){
-    if(!drawing)return;drawing=false;last=null;state.input=normalizeDrawing(state.canvas);
+    if(!drawing)return;drawing=false;last=null;state.input=normalizeDrawing(state.canvas);scheduleRecognition(state,0);
   }
   state.canvas.addEventListener('pointerup',finish);
   state.canvas.addEventListener('pointercancel',finish);
@@ -70,6 +88,7 @@ async function solve(){
     const start=performance.now();
     const result=await models.solve(inputs,labels,power);
     if(revision!==runRevision){status('Inputs changed. Select Solve again.');return;}
+    states.forEach((state,i)=>{state.recognized.textContent=String(labels[i]);});
     pixels(output,result.valid?result.proposed:null);
     $('#relation-summary').textContent=`${labels[0]} : ${labels[1]} :: ${labels[2]} : ?   ·   power = ${Number(power.toPrecision(7))}`;
     $('#timing').textContent=`${Math.round(performance.now()-start)} ms`;
@@ -107,6 +126,7 @@ async function initialize(){
     if(!globalThis.ort)throw new Error('The inference runtime did not load. Reload the page.');
     await models.load((done,total)=>{$('#solve').textContent=`Loading ${done}/${total}…`;});
     ready=true;$('#solve').disabled=false;$('#solve').textContent='Solve';
+    states.forEach(state=>{if(state.input)recognize(state);});
   }catch(error){status(`Model loading failed: ${error.message}`,true);$('#solve').textContent='Reload to retry';}
 }
 initialize();

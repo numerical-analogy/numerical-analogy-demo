@@ -27,6 +27,8 @@ try:
         page.on('pageerror',lambda e:report['console_errors'].append(str(e)))
         page.goto(url)
         page.wait_for_function("document.querySelector('#solve').textContent==='Solve'",timeout=120000)
+        assert page.locator('h1').inner_text()=='Numerical analogy on images: analogy-trained VAE'
+        assert page.locator('.recognized-digit').count()==3
         assert page.locator('.local-badge').count()==0
         page.click('#power-calculator button[type=submit]')
         assert page.locator('#calculator-result').inner_text()=='power = 2'
@@ -91,6 +93,10 @@ try:
                 page.mouse.move(box['x']+x*box['width'],box['y']+y*box['height'],steps=6)
                 if i==0:page.mouse.down()
             page.mouse.up()
+        page.wait_for_function("Array.from(document.querySelectorAll('.recognized-digit')).every(el=>/^[0-9]$/.test(el.textContent))")
+        recognized=page.locator('.recognized-digit').all_text_contents()
+        assert recognized==['1','2','3'],recognized
+        report['checks'].append('Recognized digits appear below all three canvases before Solve is clicked.')
         page.fill('#power','1');page.click('#solve')
         page.wait_for_function("!document.querySelector('#solve').disabled")
         assert 'power = 1' in page.locator('#relation-summary').inner_text()
@@ -105,6 +111,7 @@ try:
         report['checks'].append('Handwriting is recognized and solved; input and result are side by side and visible within a 900px-high desktop viewport.')
         page.fill('#power','21');page.click('#solve');assert 'between' in page.locator('#status').inner_text()
         page.click('#clear-all');assert page.locator('#relation-summary').inner_text()=='A : B :: C : ?'
+        assert page.locator('.recognized-digit').all_text_contents()==['—','—','—']
         mobile=browser.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True)
         mp=mobile.new_page();mp.goto(url)
         mp.wait_for_function("document.querySelector('#solve').textContent==='Solve'",timeout=120000)
