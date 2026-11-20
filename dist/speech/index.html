@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice and Emotion by Analogy</title>
+<meta name="description" content="Interactive demo: convert who speaks and how they feel with a numerical-analogy VAE (EmoV-DB).">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <h1>Change who speaks and how they feel, by&nbsp;analogy</h1>
+    <p class="lead">Pick a recording, then pick any speaker and emotion.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="studio" aria-labelledby="studio-h">
+  <h2 id="studio-h" class="sr-only">Try it</h2>
+
+  <div class="step">
+    <span class="num">1</span><h3>Choose a sentence</h3>
+  </div>
+  <div id="sentences" class="sentences" role="radiogroup" aria-label="Sentence"></div>
+
+  <div class="pickers">
+    <div class="picker" id="from-picker">
+      <div class="step"><span class="num">2</span><h3>Who is speaking, and how?</h3></div>
+      <div class="grid" id="from-grid"></div>
+      <p class="hint"><span class="swatch hatch"></span> not recorded in EmoV-DB</p>
+    </div>
+    <div class="picker" id="to-picker">
+      <div class="step"><span class="num">3</span><h3>Turn it into&hellip;</h3></div>
+      <div class="grid" id="to-grid"></div>
+      <p class="hint"><span class="badge-mini">A</span> never recorded: solved by analogy</p>
+    </div>
+  </div>
+
+  <div class="result" id="result" aria-live="polite">
+    <div class="side">
+      <div class="big" id="from-face"></div>
+      <div class="cap" id="from-cap"></div>
+      <button class="play" id="play-source" data-kind="source"><span class="fill"></span><span class="ic"></span><span class="lbl">Original</span></button>
+    </div>
+    <div class="flow">
+      <div class="flow-items">
+        <span class="chip content">content of the original</span>
+        <span class="plus">+</span>
+        <span class="chip spk" id="chip-spk">speaker vector</span>
+        <span class="plus">+</span>
+        <span class="chip emo" id="chip-emo">emotion vector</span>
+      </div>
+      <svg class="arrow" viewBox="0 0 200 24" aria-hidden="true"><path d="M4 12 H186" /><path d="M178 4 L192 12 L178 20" /></svg>
+      <button class="play primary" id="play-converted" data-kind="converted"><span class="fill"></span><span class="ic"></span><span class="lbl">Play the conversion</span></button>
+    </div>
+    <div class="side">
+      <div class="big" id="to-face"></div>
+      <div class="cap" id="to-cap"></div>
+      <button class="play" id="play-target" data-kind="target"><span class="fill"></span><span class="ic"></span><span class="lbl">Real recording</span></button>
+    </div>
+  </div>
+  <p class="note" id="result-note"></p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Data</strong>: EmoV-DB (Adigwe et al., 2018), four English speakers: bea and jenie (female),
+      sam and josh (male); five emotions. <strong>Features and vocoder</strong>: WavLM-Large layer&nbsp;6 and the
+      HiFi-GAN of kNN-VC (Baas et al., 2023). Every clip on this page, the real recordings included, goes through
+      the same vocoder, so differences come from the model.</p>  </div>
+</footer>
+
+<script src="faces.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
