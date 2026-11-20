@@ -1,0 +1,85 @@
+/* Layout of the image demo (unchanged). Colours, fonts and shadows come from ../common.css, shared with the
+   speech demo. The drawing and output canvases stay black: the model reads white digits on black. */
+:root{font-size:16px;line-height:1.5;--blue:var(--accent)}
+*{box-sizing:border-box}
+body{margin:0}
+button,input{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.55}
+.local-badge{font-size:.875rem;color:var(--accent);padding:5px 12px;border:1px solid var(--accent-line);border-radius:30px;background:var(--accent-soft)}
+main{max-width:1120px;margin:auto;padding:0 16px}
+.intro{padding:40px 0 26px}
+h1{font-size:clamp(1.8rem,4.2vw,2.8rem);line-height:1.2;letter-spacing:-.01em;margin:0;font-weight:700}
+h2{font-size:1.15rem;margin:0}
+h3{font-size:1rem;margin:0}
+.interaction-layout{display:grid;grid-template-columns:minmax(0,2.45fr) minmax(260px,1fr);gap:20px;align-items:stretch}
+.workspace,.results,.calculator{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;min-width:0}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.text-button{background:none;border:0;color:var(--accent);padding:4px;font-size:.875rem;white-space:nowrap}
+.text-button:hover{text-decoration:underline}
+.inputs{display:grid;grid-template-columns:1fr 20px 1fr 20px 1fr;align-items:start;gap:5px}
+.digit-card{min-width:0}
+.card-heading{display:flex;align-items:center;justify-content:space-between;padding:0 2px 8px}
+.card-heading h3{font-family:Georgia,serif;font-size:1.15rem;font-weight:400}
+.drawing{display:block;background:#080d16;border-radius:10px;width:100%;height:auto;aspect-ratio:1;touch-action:none;cursor:crosshair;border:1px solid #18243a}
+.relation-separator{align-self:center;font-family:Georgia,serif;font-size:1.65rem;color:var(--muted);text-align:center;padding-top:24px}
+.solve-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:22px}
+.power-control{display:flex;align-items:center;gap:12px}
+.power-control label{font-size:.95rem;font-weight:600}
+input{border:1.5px solid var(--input-line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 10px;min-width:0}
+#power{width:150px}
+.primary{border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);padding:11px 24px;font-size:.95rem;font-weight:600;white-space:nowrap}
+.primary:hover{background:var(--accent-hover)}
+.status{font-size:.875rem;color:var(--muted);margin:16px 0 0}
+.status.error{color:var(--error)}
+#timing{font-size:.8rem;color:var(--muted)}
+.results{display:flex;flex-direction:column}
+.output-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;flex:1}
+.output-card canvas{width:min(100%,190px);height:auto;aspect-ratio:1;background:#080d16;border-radius:10px;image-rendering:pixelated}
+.output-card h3{font-size:.9rem;color:var(--accent);font-weight:600}
+.output-card p{font-size:.875rem;color:var(--muted);margin:0;text-align:center}
+.domain-note{border-left:3px solid var(--warn);background:var(--warn-soft);padding:10px 12px;font-size:.875rem;color:var(--warn);border-radius:0 8px 8px 0}
+.calculator{margin-top:20px;margin-bottom:28px}
+#power-calculator{display:flex;align-items:flex-end;gap:24px}
+.number-fields{display:grid;grid-template-columns:1fr 15px 1fr 22px 1fr 15px 1fr;align-items:end;gap:10px;flex:1;max-width:720px}
+.number-fields label{display:flex;flex-direction:column;gap:6px;font-family:Georgia,serif;font-size:1.1rem}
+.number-fields input{width:100%;font-family:var(--font);font-size:1rem}
+.number-fields>span{font-family:Georgia,serif;font-size:1.4rem;text-align:center;padding-bottom:7px;color:var(--muted)}
+.calculator-answer{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:18px;min-height:43px}
+#calculator-result{font-size:1.1rem;font-weight:600;color:var(--accent);margin:0}
+#calculator-detail{font-size:.875rem;color:var(--muted);margin:4px 0 0}
+.secondary{background:var(--accent-soft);border:1.5px solid var(--accent-line);border-radius:999px;color:var(--accent);padding:8px 15px;font-size:.875rem;font-weight:600;white-space:nowrap}
+footer{max-width:1120px;padding:20px 16px;border-top:1px solid var(--line);margin:auto;display:flex;justify-content:space-between;gap:15px;color:var(--muted);font-size:.8rem}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+[hidden]{display:none!important}
+@media(max-width:850px){.interaction-layout{grid-template-columns:minmax(0,1.9fr) minmax(220px,1fr);gap:12px}
+.workspace,.results,.calculator{padding:18px}
+.inputs{grid-template-columns:1fr 12px 1fr 12px 1fr;gap:3px}
+.relation-separator{font-size:1.1rem}
+.output-card canvas{max-width:165px}
+.solve-bar{gap:8px}
+#power{width:110px}
+.primary{padding:10px 16px}
+}
+@media(max-width:620px){
+.local-badge{font-size:.75rem}
+main{padding:0 16px}
+.intro{padding:24px 0}
+.interaction-layout{grid-template-columns:1fr}
+.workspace,.results,.calculator{padding:16px}
+.inputs{grid-template-columns:1fr 14px 1fr 14px 1fr;gap:4px}
+.drawing{border-radius:6px}
+.results .section-head{margin-bottom:12px}
+.output-card{display:grid;grid-template-columns:116px 1fr;column-gap:20px;row-gap:4px;justify-content:start;align-items:center}
+.output-card canvas{width:116px;grid-row:1/3}
+.output-card h3{align-self:end}
+.output-card p{text-align:left;align-self:start}
+.number-fields{gap:5px;grid-template-columns:1fr 10px 1fr 14px 1fr 10px 1fr}
+#power-calculator{flex-wrap:wrap;gap:16px}
+.number-fields{flex-basis:100%}
+#power-calculator .primary{width:100%}
+footer{padding:18px;flex-direction:column;gap:4px}
+.calculator-answer{align-items:flex-start}
+.number-fields input{padding:9px 6px}
+}
+.recognized-digit{display:block;text-align:center;font-size:1.2rem;line-height:1.4;font-weight:600;color:var(--accent);margin-top:8px;min-height:27px}

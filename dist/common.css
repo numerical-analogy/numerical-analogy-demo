@@ -1,0 +1,69 @@
+/* Shared by dist/image/ and dist/speech/: colour tokens (light and dark) and the top bar that switches
+   between the two demos. Each page keeps its own stylesheet for its own layout. */
+:root {
+  --bg: #faf7f4;
+  --surface: #ffffff;
+  --ink: #2a2023;
+  --muted: #6d6266;
+  --line: #e7dfda;
+  --accent: #8e1b2e;            /* maroon */
+  --accent-hover: #741524;
+  --accent-soft: #f6e8ea;
+  --on-accent: #ffffff;         /* text on accent-coloured buttons */
+  --accent-line: #e6c5cb;
+  --hatch: #ece6e2;
+  --cell: #fbf9f7;
+  --input-line: #ddd2cc;
+  --warn: #8a5a12;
+  --warn-soft: #fbf3e4;
+  --error: #a43c24;
+  /* emotions */
+  --Neutral: #2f7d32;
+  --Amused: #d79b00;
+  --Angry: #8a1c8a;
+  --Sleepy: #5f6496;
+  --Disgusted: #69821a;
+  /* speakers */
+  --bea: #2340b8;
+  --jenie: #b0306a;
+  --sam: #d86f00;
+  --josh: #0f8a7e;
+  --content: #4a6fa5;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(60, 30, 30, .06), 0 6px 20px rgba(60, 30, 30, .06);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17131a; --surface: #211b24; --ink: #f1eaec; --muted: #b0a5aa; --line: #3a3138;
+    --accent: #e0788a; --accent-hover: #ea95a4; --on-accent: #1a1216; --accent-soft: #3a2228; --accent-line: #5a3540;
+    --hatch: #2b2430; --cell: #1c171f; --input-line: #463b44; --warn: #e3b36a; --warn-soft: #2e2618; --error: #f08a70;
+    --Neutral: #6cc070; --Amused: #f0bd3a; --Angry: #d27ad2; --Sleepy: #9ea4dc; --Disgusted: #a8c24e;
+    --bea: #7f95ff; --jenie: #f07aaa; --sam: #ffa24a; --josh: #4fd0c2; --content: #8fb0e0;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17131a; --surface: #211b24; --ink: #f1eaec; --muted: #b0a5aa; --line: #3a3138;
+  --accent: #e0788a; --accent-hover: #ea95a4; --on-accent: #1a1216; --accent-soft: #3a2228; --accent-line: #5a3540;
+  --hatch: #2b2430; --cell: #1c171f; --input-line: #463b44; --warn: #e3b36a; --warn-soft: #2e2618; --error: #f08a70;
+  --Neutral: #6cc070; --Amused: #f0bd3a; --Angry: #d27ad2; --Sleepy: #9ea4dc; --Disgusted: #a8c24e;
+  --bea: #7f95ff; --jenie: #f07aaa; --sam: #ffa24a; --josh: #4fd0c2; --content: #8fb0e0;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+  color-scheme: dark;
+}
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); }
+
+/* top bar: site name + switch between the demos */
+.sitenav { border-bottom: 1px solid var(--line); background: var(--surface); position: sticky; top: 0; z-index: 10; }
+.sitenav .in { max-width: 1120px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
+.sitenav .site { font-weight: 700; color: var(--ink); text-decoration: none; font-size: 1rem; white-space: nowrap; }
+.sitenav .tabs { display: flex; gap: 4px; background: var(--cell); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.sitenav .tabs a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: .9rem; padding: 6px 16px; border-radius: 999px; transition: background .15s, color .15s; }
+.sitenav .tabs a:hover { color: var(--ink); }
+.sitenav .tabs a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
+.sitenav a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 480px) { .sitenav .site { font-size: .9rem; } .sitenav .tabs a { padding: 6px 12px; } }

@@ -12,7 +12,7 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
     def log_message(self,*args):pass
 server=http.server.ThreadingHTTPServer(('127.0.0.1',8767),functools.partial(Quiet,directory=str(ROOT)))
 threading.Thread(target=server.serve_forever,daemon=True).start()
-url='http://127.0.0.1:8767/dist/'
+url='http://127.0.0.1:8767/dist/image/'
 fixtures=json.loads((ROOT/'review/fixtures.json').read_text())
 samples=json.loads((ROOT/'review/samples.json').read_text())
 power_refs=json.loads((ROOT/'review/power_reference.json').read_text())

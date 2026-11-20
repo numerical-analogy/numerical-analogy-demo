@@ -25,7 +25,7 @@ sys.path.insert(0, str(SOURCE))
 from model import VAE
 
 torch.set_num_threads(2)
-OUT = ROOT / 'dist'
+OUT = ROOT / 'dist' / 'image'
 (ROOT/'review').mkdir(exist_ok=True)
 (OUT/'models').mkdir(parents=True,exist_ok=True)
 
